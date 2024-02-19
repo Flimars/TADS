@@ -1,0 +1,2 @@
+GET http://localhost:8080/api/v1/turmas/?ano=2022
+Content-Type: application/json

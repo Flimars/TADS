@@ -1,0 +1,5 @@
+persistencia/UserDAO.class
+negocio/Contato.class
+persistencia/AgendaDAO.class
+apresentacao/Main.class
+negocio/Endereco.class
