@@ -1,4 +1,4 @@
-### Desenvolvimento Aplicativos Web I
+### Desenvolvimento de Aplicativos Web I
 
 **Objetivo**
 Compreender os fundamentos, princípios, técnicas e arquiteturas dos
