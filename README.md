@@ -21,7 +21,7 @@ ___
   - Introdução à Administração. 
   - Teorias em Administração. 
   - Relações humanas, competências e liderança. 
-  - Conceitos básicos sobre a Gestão de Operações, 
+  - Conceitos básicos sobre a Gestão de Operações. 
   - Recursos Humanos, Marketing e Finanças. Empreendedorismo. 
   - Técnicas e procedimentos para elaboração de planos de negócios. 
   - Planejamento Estratégico. Precificação de Software. 
