@@ -17,8 +17,15 @@ ___
 
 ### Empreendimentos Empresariais
 - **Professora**: Drª. Ana Carolina Salles
-- **Descrição**: Esta disciplina foca no estudo de empreendimentos empresariais, abordando tópicos como gestão, liderança, estratégia empresarial, organização e muito mais.
-
+- **Descrição**: Esta disciplina foca no estudo de empreendimentos empresariais, abordando tópicos como: 
+  - Introdução à Administração 
+  - Teorias em Administração. 
+  - Relações humanas, competências e liderança. 
+  - Conceitos básicos sobre a Gestão de Operações, 
+  - Recursos Humanos, Marketing e Finanças. Empreendedorismo. 
+  - Técnicas e procedimentos para elaboração de planos de negócios. 
+  - Planejamento Estratégico. Precificação de Software. 
+  - Noções de qualidade e produtividade.
 ___
 
 ### Estrutura de Dados
