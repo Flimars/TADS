@@ -5,7 +5,7 @@
 
 3. Validar CEP? É possível?
 
-4. alidação e Máscara de CPF
+4. Validação e Máscara de CPF
 
 5. Stored Procedure que retorne os agendamentos anteriores de um paciente
 
