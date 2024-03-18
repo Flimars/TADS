@@ -1,4 +1,7 @@
--- Exemplo: Função que concatena textos
+-- Exemplo: Função que concatena textos.
+
+-- REMOVENDO A FUNÇÃO
+-- DROP FUNCTION soma();
 
 -- Criando a função
 CREATE FUNCTION soma(text, text) RETURNS char AS
