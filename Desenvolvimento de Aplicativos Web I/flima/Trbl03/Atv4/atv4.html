@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang=pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade nº 4</title>
+</head>
+<body>
+    <form action="processarATV4.php" method="post" id="formatv4">
+        <p>Informe 10 números:</p>        
+        Número 1:<input type="number" id="numero1" name="numeros[]" required><br>
+        Número 2:<input type="number" id="numero2" name="numeros[]" required><br>
+        Número 3:<input type="number" id="numero3" name="numeros[]" required><br>
+        Número 4:<input type="number" id="numero4" name="numeros[]" required><br>
+        Número 5:<input type="number" id="numero5" name="numeros[]" required><br>
+        Número 6:<input type="number" id="numero6" name="numeros[]" required><br>
+        Número 7:<input type="number" id="numero7" name="numeros[]" required><br>
+        Número 8:<input type="number" id="numero8" name="numeros[]" required><br>
+        Número 9:<input type="number" id="numero9" name="numeros[]" required><br>
+        Número 10:<input type="number" id="numero10" name="numeros[]" required><br>
+        <input type="submit" value="Calcular Média">  
+        <button type="button" id="limparCampos">Limpar</button>      
+    </form> 
+    <script>
+        //Limpar os campus de input do formulário.
+        document.getElementById('limparCampos').addEventListener('click', function() {
+            document.getElementById('formatv4').reset();           
+        });
+    </script>   
+</body>
+</html>
+
+

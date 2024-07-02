@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade nº 5</title>
+</head>
+<body>
+    <form method="post" action="processarATV5.php" id="formatv5">
+        Quantos pacientes: <input type="number" name="qtdPacientes" id="qtdPacientes"><br>
+        <div id="inputs"></div>
+        <input type="submit">
+        <button type="button" id="limparCampos">Limpar</button>
+      </form>
+      <script>
+      document.getElementById('qtdPacientes').addEventListener('change', function() {
+        var qtdPacientes = this.value;
+        var inputs = '';
+        for (var i = 1; i <= qtdPacientes; i++) {
+          inputs += 'Idade do paciente ' + i + ': <input type="number" name="idade' + i + '"><br>';
+        }
+        document.getElementById('inputs').innerHTML = inputs;
+      });
+      
+        document.getElementById('limparCampos').addEventListener('click', function() {
+            document.getElementById('formatv5').reset();           
+        });
+    
+      </script>
+    
+</body>
+</html>

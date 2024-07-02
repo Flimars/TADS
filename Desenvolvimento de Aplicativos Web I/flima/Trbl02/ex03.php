@@ -36,4 +36,5 @@ echo "Menor número é: ", $menor,"<br>",
      "Maior número é: ", $maior, "<br>",
      "Percentual de números pares: ", $percentual, "% <br>",
      "Media dos elementos: ", $media;
+
 ?>

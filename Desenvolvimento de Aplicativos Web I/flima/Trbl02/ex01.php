@@ -5,7 +5,7 @@ se esse valor é positivo, negativo ou igual a zero. A saída deve ser: ”Valor
 Positivo”, ”Valor Negativo”ou ”Igual a Zero”.
 */
 
-$numeroInformado = -10;
+$numeroInformado = 10;
 
 if( $numeroInformado < 0) {
     echo"Valor Negativo";   
