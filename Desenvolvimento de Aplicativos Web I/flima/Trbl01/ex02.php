@@ -1,21 +1,21 @@
-/*
-* Classificação etária
-* Escreva um algoritmo que recebe a idade de uma pessoa. Então mostre na tela se
-* ele é criança (menor de 13 anos), adolescente (entre 13 e 19 anos), adulto (entre
-* 20 e 60 anos) ou idoso (mais de 60 anos).
-*/
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-
-    <?php
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Ex-Classificação Etária</title>
+    </head>
+    <body>
+        
+        <?php
+        /*
+        * Classificação etária
+        * Escreva um algoritmo que recebe a idade de uma pessoa. Então mostre na tela se
+        * ele é criança (menor de 13 anos), adolescente (entre 13 e 19 anos), adulto (entre
+        * 20 e 60 anos) ou idoso (mais de 60 anos).
+        */
         echo "<br>";
         echo "<br>";
 

@@ -14,16 +14,16 @@ $contador = 0;
 do {
     switch ($contador) {
         case 0:
-            echo "$palavra\n";
+            echo "$palavra <br>";
             break;
         case 1:
-            echo "$palavra $palavra\n";
+            echo "$palavra $palavra <br>";
             break;
         case 2:
-            echo "$palavra $palavra $palavra\n";
+            echo "$palavra $palavra $palavra <br>";
             break;
         case 3:
-            echo "$palavra $palavra $palavra $palavra\n";
+            echo "$palavra $palavra $palavra $palavra <br>";
             break;
         
         default:
@@ -33,6 +33,5 @@ do {
     $contador++;
     
 } while ($contador <= 3);
-
 
 ?>

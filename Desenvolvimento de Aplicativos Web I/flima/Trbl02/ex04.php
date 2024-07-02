@@ -5,14 +5,13 @@
     Exemplo, para A=5, B=4.
     Você deve imprimir na tela: ”4 5”.
 */
-
 $A = 9;
-$B = 4;
- 
+$B = 3;
+
 if ($A > $B) {
     echo "$B $A";
-   } else {
-    echo "$A $B";  
+} else {
+    echo "$A $B";
 }
 
 

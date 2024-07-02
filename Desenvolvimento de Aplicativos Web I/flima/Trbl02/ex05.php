@@ -6,7 +6,6 @@
     Exiba também a média final calculada.
     Ex: N1 = 5 | N2 = 10 | N3 = 4 | MG = 6,33 [Aprovado]
 */
-
 $soma = 0;
 $notas = array(5.5, 6, 8);
 
