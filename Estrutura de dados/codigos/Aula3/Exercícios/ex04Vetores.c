@@ -1,5 +1,0 @@
-/*
-4) Escreva uma função menorVetor que receba um vetor inteiro v[0..n-1], e a quantidade
-de elementos do vetor(n), a função retorna o endereço do menor elemento do vetor.
-
-*/
