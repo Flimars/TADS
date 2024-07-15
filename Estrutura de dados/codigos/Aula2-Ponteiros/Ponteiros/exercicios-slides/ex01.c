@@ -8,3 +8,12 @@
     3. Mostre o endereço do ponteiro *ps, mostre o conteúdo referenciado por *ps.
     4. Mostre o endereço das variaveis A e B.
 */
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+
+int main () {
+    
+}

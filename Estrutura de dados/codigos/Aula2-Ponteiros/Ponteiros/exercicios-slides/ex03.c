@@ -9,4 +9,13 @@
     3. Crie uma variavel double C, e copie o valor referenciado no ponteiro *ps
     para a variavel C. Mostreo valor de C.
 
-/*
+*/
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+
+int main () {
+    
+}
