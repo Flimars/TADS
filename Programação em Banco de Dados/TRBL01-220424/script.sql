@@ -21,10 +21,24 @@ END;
 $$ LANGUAGE plpgsql;
 --===========================================================================
 
-CREATE OR REPLACE FUNCTION verificaPost(post_id INTEGER) RETURNS BOOLEAN AS 
+CREATE OR REPLACE FUNCTION verificaPost(p_pessoa_id INTEGER, p_post_id INTEGER) RETURNS BOOLEAN AS 
 $$
+DECLARE
+    v_compartilhado BOOLEAN;
+    v_autor_count INTEGER;
 BEGIN
-    RETURN (SELECT compartilhado FROM Post WHERE id = post_id);
+    --Verifica se o post é compartilhado
+    SELECT compartilhado INTO v_compartilhado FROM post WHERE id = p_post_id;
+
+    -- Se for compartilhado, permite multiplos autores
+    IF v_compartilhado THEN
+        RETURN TRUE;
+    -- Se não for compartilhado, verifica se já existe um autor
+    ELSE 
+        SELECT COUNT(*) INTO v_autor_count FROM pessoa_post WHERE post_id = p_post_id;
+        -- Permite a inserção apenas se não houver autores ou se for o primeiro autor
+        RETURN (v_autor_count = 0);
+    END IF;        
 END;
 $$ LANGUAGE plpgsql;
 
@@ -46,6 +60,7 @@ CREATE TABLE Endereco (
     cep VARCHAR(10) NOT NULL,
     pessoa_id INTEGER REFERENCES Pessoa(id),
     CHECK (ehLeitor(pessoa_id) IS TRUE)
+    -- CONSTRAINT endereco_tipo_check CHECK ((tipo = 'L'))
 );
 
 CREATE TABLE post (
@@ -60,10 +75,68 @@ CREATE TABLE pessoa_post (
     pessoa_id INTEGER REFERENCES pessoa(id),
     post_id INTEGER REFERENCES post(id),
     PRIMARY KEY (pessoa_id, post_id),
-    CHECK (ehAutor(pessoa_id))
-    -- CHECK (verificaPost(post_id))
+    CHECK (ehAutor(pessoa_id)),
+    CHECK (verificaPost(pessoa_id, post_id))
 );
---===========================================================================
+
+--===========================================================================================
+
+-- Queries:
+-- Desta forma, desenvolva:
+
+-- 1) A implementação física (script.sql) (1,0)
+
+-- 2) Um Stored Procedured para ser usado na cláusula check que permita que somente autores (pessoa do tipo = 'A') escrevam posts (1,0)
+
+-- Em outras palavras: que somente pessoas do tipo = 'A' (autor) estejam envolvidos em tuplas da tabela em pessoa_post.
+
+-- Além disso, deve verificar se o Post permite - ou não - que mais de um autor esteja relacionado (possa editá-lo), permitindo que um post tenha n tuplas em pessoa_post (com ligação com diversos autores).
+
+CREATE OR REPLACE FUNCTION verificar_autor_post(p_pessoa_id INTEGER, p_post_id INTEGER)
+RETURNS BOOLEAN AS $$
+DECLARE
+    eh_tipo_autor CHAR;
+    contador INTEGER;
+BEGIN
+    -- Verifica se a pessoa é um autor
+    SELECT tipo INTO eh_tipo_autor FROM pessoa WHERE id = p_pessoa_id;
+    IF eh_tipo_autor != 'A' THEN
+        RAISE EXCEPTION 'Apenas autores podem escrever posts';
+    END IF;
+
+    -- Verifica se o post já tem um autor (assumindo que um post só pode ter um autor)
+    SELECT COUNT(*) INTO contador FROM pessoa_post WHERE post_id = p_post_id;
+    IF contador > 0 THEN
+        RAISE EXCEPTION 'Este post ja tem um autor';
+    END IF;
+
+    RETURN TRUE;
+END;
+$$ LANGUAGE plpgsql;
+
+-- 3) Um Stored Procedured que mostre as informações de todos as pessoas (leitores e autores) (1,0)
+
+-- Caso seja leitor e tenha endereços cadastrados, estes endereços devem aparecer ao lado do nome e separados por vírgula. Se não tiver endereço cadastrado, coloque "LEITOR - SEM ENDEREÇO CADASTRADO".
+
+-- Caso seja autor, coloque "AUTOR - SEM ENDEREÇO CADASTRADO".
+
+-- Dica: use a função String_AGG do PostgreSQL.
+
+-- 4) Um Stored Procedured para ser usado na cláusula check que permita verificar que somente Leitores (tipo = 'L') tenham endereço cadastrado (0,5)
+
+-- 5) Um Stored Procedured que mostre a quantidade de autores envolvidos na escrita de cada Post (0,5)
+
+-- Mostre o título de cada Post, sua data de publicação (formatada) e a quantidade correspondente de autores.
+-- 6) Um Stored Procedured que mostre o título de cada Post e o nome de cada autor envolvido em sua escrita (0,5)
+
+-- Caso tenha mais de um autor envolvido na escrita, estes nomes devem aparecer em uma mesma coluna separados por vírgula (Use String_Agg)
+-- 7) Um Stored Procedured que autentique (login) Pessoas (Leitores e Autores) (0,5)
+
+-- As senhas devem ser armazenadas em md5
+
+--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+--===========================================================================================
 -- INSERTS: 
 INSERT INTO pessoa (nome, senha, tipo, email) VALUES 
 ('Juliana Blasina', md5('b0324fdb011779993800b6b91400053d'), 'A', 'jublasina@live.com'),
@@ -106,11 +179,11 @@ INSERT INTO Endereco (bairro, rua, numero, cep, pessoa_id) VALUES
 ('Ponta Negra', 'Alameda Uruguai', '1283', '69.037-220', 12);
 
 INSERT INTO post (titulo, texto, data_hora_publicacao, compartilhado) VALUES 
-('Manifesto In Corpa', 'Texto 1: O manifesto In Corpa celebra a diversidade de corpos e promove a aceitação. Corpos são únicos, e cada um tem sua própria história. Valorize a saúde, o movimento e a autoaceitação. Seja gentil consigo mesmo e com os outros. Corpo e mente merecem amor e respeito.', NOW(), TRUE),
-('O Novo Horror', 'Texto 2: O horror não se limita a filmes de terror. O mundo real também tem suas histórias assustadoras: desastres naturais, pandemias, conflitos. O novo horror é a incerteza, a vulnerabilidade e a busca por esperança. Enfrentá-lo requer resiliência, compaixão e solidariedade.
-', NOW(), FALSE);
--- ('O Rastro da Serpente', 'Texto 3:A serpente, símbolo de transformação, deixa seu rastro na jornada humana. Ela nos ensina a soltar o passado, a renovar e a nos adaptar. Assim como a serpente troca de pele, nós também podemos nos reinventar e seguir em frente, deixando um rastro de crescimento.', NOW(), FALSE),
--- ('O Poder da Mente: Como a Psicologia Influencia na sua Rotina de Bem-Estar', 'Texto 4: A mente é uma ferramenta poderosa. Nossos pensamentos moldam nossas emoções e comportamentos. A psicologia nos ensina a reconhecer padrões negativos, a desenvolver resiliência e a cultivar uma mentalidade positiva. A mente é o alicerce do nosso bem-estar físico e emocional.', NOW(), FALSE),
+('Manifesto In Corpa', 'Texto 1: O manifesto In Corpa celebra a diversidade de corpos e promove a aceitacao. Corpos sao unicos, e cada um tem sua propria historia. Valorize a saude, o movimento e a autoaceitacao. Seja gentil consigo mesmo e com os outros. Corpo e mente merecem amor e respeito.', NOW(), TRUE),
+('O Novo Horror', 'Texto 2: O horror nao se limita a filmes de terror. O mundo real tambem tem suas historias assustadoras: desastres naturais, pandemias, conflitos. O novo horror e a incerteza, a vulnerabilidade e a busca por esperança. Enfrenta-lo requer resiliencia, compaixao e solidariedade.
+', NOW(), FALSE),
+('O Rastro da Serpente', 'Texto 3:A serpente, simbolo de transformacao, deixa seu rastro na jornada humana. Ela nos ensina a soltar o passado, a renovar e a nos adaptar. Assim como a serpente troca de pele, nos também podemos nos reinventar e seguir em frente, deixando um rastro de crescimento.', NOW(), FALSE),
+('O Poder da Mente: Como a Psicologia Influencia na sua Rotina de Bem-Estar', 'Texto 4: A mente e uma ferramenta poderosa. Nossos pensamentos moldam nossas emocoes e comportamentos. A psicologia nos ensina a reconhecer padroes negativos, a desenvolver resiliencia e a cultivar uma mentalidade positiva. A mente e o alicerce do nosso bem-estar fisico e emocional.', NOW(), FALSE);
 -- ('Transforme sua Rotina Matinal: Hábitos para um Dia Mais Produtivo e Equilibrado', 'Texto 5:  A maneira como começamos o dia influencia todo o restante. Crie uma rotina matinal que inclua hidratação, alongamento, meditação ou leitura. Evite o hábito de verificar o celular imediatamente após acordar. Priorize atividades que nutram sua mente e corpo. ', NOW(), FALSE),
 -- ('10 Passos Simples para uma Rotina Eficaz', 'Texto 6: Simplificar nossa rotina pode melhorar nossa produtividade e bem-estar. Comece com pequenas mudanças: estabeleça metas realistas, priorize tarefas importantes, durma bem, faça pausas regulares e mantenha-se organizado. A simplicidade é a chave para uma vida mais eficiente e satisfatória.
 -- ', NOW(), FALSE),
@@ -118,42 +191,14 @@ INSERT INTO post (titulo, texto, data_hora_publicacao, compartilhado) VALUES
 -- ('Desvendando os Mitos da Nutrição', 'Texto 8: Proin a dui aliquet, suscipit lorem eget, cursus odio.', NOW(), FALSE),
 -- ('Como a Psicologia Influencia na sua Rotina de Bem-Estar', 'Texto 9: A mente e o corpo estão intrinsecamente ligados. A psicologia desempenha um papel fundamental em nosso bem-estar. Nossos pensamentos, emoções e comportamentos afetam nossa saúde física. Praticar mindfulness, gerenciar o estresse e cultivar relacionamentos saudáveis são estratégias que impactam positivamente nossa qualidade de vida.', NOW(), FALSE),
 -- ('O que é Realmente Saudável?', 'Texto 10:  A busca pela saúde muitas vezes nos leva a questionar o que é verdadeiramente saudável. É importante lembrar que não existe uma fórmula única. O que é saudável para uma pessoa pode não ser para outra. Equilíbrio, variedade e moderação são princípios essenciais. Priorize alimentos naturais, evite ultraprocessados e consulte um profissional de saúde para orientações personalizadas.', NOW(), TRUE);
+-- Antes de inserir em pessoa_post
+SELECT verificar_autor_post(5, 4);
+INSERT INTO pessoa_post (pessoa_id, post_id) VALUES (5, 4);
+-- INSERT INTO pessoa_post(pessoa_id, post_id) VALUES
+-- (1,	1),
+-- (2, 1),
+-- (3, 2),
+-- (4, 3);
 
-INSERT INTO pessoa_post(pessoa_id, post_id) VALUES
-(1,	1),
-(2, 2);
+--============================================================================================
 
---+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
--- Queries:
-
--- Desta forma, desenvolva:
-
--- 1) A implementação física (script.sql) (1,0)
-
--- 2) Um Stored Procedured para ser usado na cláusula check que permita que somente autores (pessoa do tipo = 'A') escrevam posts (1,0)
-
--- Em outras palavras: que somente pessoas do tipo = 'A' (autor) estejam envolvidos em tuplas da tabela em pessoa_post.
-
--- Além disso, deve verificar se o Post permite - ou não - que mais de um autor esteja relacionado (possa editá-lo), permitindo que um post tenha n tuplas em pessoa_post (com ligação com diversos autores).
-
--- 3) Um Stored Procedured que mostre as informações de todos as pessoas (leitores e autores) (1,0)
-
--- Caso seja leitor e tenha endereços cadastrados, estes endereços devem aparecer ao lado do nome e separados por vírgula. Se não tiver endereço cadastrado, coloque "LEITOR - SEM ENDEREÇO CADASTRADO".
-
--- Caso seja autor, coloque "AUTOR - SEM ENDEREÇO CADASTRADO".
-
--- Dica: use a função String_AGG do PostgreSQL.
-
--- 4) Um Stored Procedured para ser usado na cláusula check que permita verificar que somente Leitores (tipo = 'L') tenham endereço cadastrado (0,5)
-
--- 5) Um Stored Procedured que mostre a quantidade de autores envolvidos na escrita de cada Post (0,5)
-
--- Mostre o título de cada Post, sua data de publicação (formatada) e a quantidade correspondente de autores.
--- 6) Um Stored Procedured que mostre o título de cada Post e o nome de cada autor envolvido em sua escrita (0,5)
-
--- Caso tenha mais de um autor envolvido na escrita, estes nomes devem aparecer em uma mesma coluna separados por vírgula (Use String_Agg)
--- 7) Um Stored Procedured que autentique (login) Pessoas (Leitores e Autores) (0,5)
-
--- As senhas devem ser armazenadas em md5
-
---+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
