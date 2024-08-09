@@ -12,7 +12,7 @@ typedef struct {
     int discos[MAX_PILHA];
 } Pilha;
 
-// Funções de manipulação da pilha
+// FunÃ§Ãµes de manipulaÃ§Ã£o da pilha
 void inicializarPilha(Pilha *p) {
     p->topo = -1;
 }
@@ -45,7 +45,7 @@ int peek(Pilha *p) {
     return -1; // Valor de erro
 }
 
-// Função para mostrar o estado atual das pilhas
+// FunÃ§Ã£o para mostrar o estado atual das pilhas
 void mostrarPilhas(Pilha pilhas[], Pilha temp1, Pilha temp2) {
     printf("\nEstado das Pilhas:");
     for (int i = 0; i < 4; i++) {
@@ -54,18 +54,18 @@ void mostrarPilhas(Pilha pilhas[], Pilha temp1, Pilha temp2) {
             printf("%d ", pilhas[i].discos[j]);
         }
     }
-    printf("\nTemporário 1: ");
+    printf("\nTemporï¿½rio 1: ");
     if (!isEmpty(&temp1)) {
         printf("%d", peek(&temp1));
     }
-    printf("\nTemporário 2: ");
+    printf("\nTemporï¿½rio 2: ");
     if (!isEmpty(&temp2)) {
         printf("%d", peek(&temp2));
     }
     printf("\n");
 }
 
-// Função para inicializar o jogo com discos distribuídos aleatoriamente
+// FunÃ§Ã£o para inicializar o jogo com discos distribuÃ­dos aleatoriamente
 void inicializarJogo(Pilha pilhas[]) {
     int discos[NUM_DISCOS];
     for (int i = 0; i < NUM_DISCOS; i++) {
@@ -87,7 +87,7 @@ void inicializarJogo(Pilha pilhas[]) {
     }
 }
 
-// Função para mover discos entre pilhas e temporários
+// FunÃ§Ã£o para mover discos entre pilhas e temporÃ¡rios
 void moverDisco(Pilha *origem, Pilha *destino) {
     if (!isEmpty(origem) && (isEmpty(destino) || peek(origem) == peek(destino))) {
         int disco = pop(origem);
@@ -117,10 +117,10 @@ int main() {
     int op, origem, destino;
     do {
         printf("\n1. Mover de pilha para pilha");
-        printf("\n2. Mover de pilha para temporário");
-        printf("\n3. Mover de temporário para pilha");
+        printf("\n2. Mover de pilha para temporï¿½rio");
+        printf("\n3. Mover de temporï¿½rio para pilha");
         printf("\n0. Sair");
-        printf("\nEscolha uma opção: ");
+        printf("\nEscolha uma opï¿½ï¿½o: ");
         scanf("%d", &op);
 
         switch (op) {
@@ -134,12 +134,12 @@ int main() {
             case 2:
                 printf("Mover de pilha (1-4): ");
                 scanf("%d", &origem);
-                printf("Para temporário (1-2): ");
+                printf("Para temporï¿½rio (1-2): ");
                 scanf("%d", &destino);
                 moverDisco(&pilhas[origem - 1], destino == 1 ? &temp1 : &temp2);
                 break;
             case 3:
-                printf("Mover de temporário (1-2): ");
+                printf("Mover de temporï¿½rio (1-2): ");
                 scanf("%d", &origem);
                 printf("Para pilha (1-4): ");
                 scanf("%d", &destino);
@@ -148,7 +148,7 @@ int main() {
             case 0:
                 break;
             default:
-                printf("Opção inválida!\n");
+                printf("Opï¿½ï¿½o invï¿½lida!\n");
         }
 
         mostrarPilhas(pilhas, temp1, temp2);
@@ -172,7 +172,7 @@ int main() {
         }
 
         if (venceu) {
-            printf("Parabéns, você venceu!\n");
+            printf("Parabï¿½ns, vocï¿½ venceu!\n");
             break;
         }
     } while (op != 0);
