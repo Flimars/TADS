@@ -5,7 +5,6 @@
 #define MAX_DISCOS 4
 #define NUM_CORES 4
 
-//Structs
 typedef struct {
     int cor;
 } Disco;
@@ -20,7 +19,6 @@ typedef struct {
     int ocupado;
 } PilhaUnit;
 
-// Implementaçao das funções auxiliares
 void inicializarPilha(Pilha *p) {
     p->topo = -1;
 }
@@ -102,7 +100,7 @@ void distribuirDiscos(Pilha *p1, Pilha *p2, Pilha *p3, Pilha *p4) {
     }
 }
 
-void exibirJogo(Pilha *p1, Pilha *p2, Pilha *p3, Pilha *p4, PilhaUnit *temp1, PilhaUnit *temp2) {
+void exibirJogo(Pilha *p1, Pilha *p2, Pilha *p3, Pilha *p4, PilhaUnit *temp1, PilhaUnit *temp2, int usoTemp1, int usoTemp2) {
     int i;
 
     printf("Pilha 1: ");
@@ -129,44 +127,50 @@ void exibirJogo(Pilha *p1, Pilha *p2, Pilha *p3, Pilha *p4, PilhaUnit *temp1, Pi
     }
     printf("\n");
 
-    printf("Temp1: ");
-    if (pilhaUnitOcupada(temp1)) {
-        printf("%d", temp1->disco.cor);
-    } else {
-        printf("vazio");
+    if (usoTemp1) {
+        printf("Temp1: ");
+        if (pilhaUnitOcupada(temp1)) {
+            printf("%d", temp1->disco.cor);
+        } else {
+            printf("vazio");
+        }
+        printf("\n");
     }
-    printf("\n");
 
-    printf("Temp2: ");
-    if (pilhaUnitOcupada(temp2)) {
-        printf("%d", temp2->disco.cor);
-    } else {
-        printf("vazio");
+    if (usoTemp2) {
+        printf("Temp2: ");
+        if (pilhaUnitOcupada(temp2)) {
+            printf("%d", temp2->disco.cor);
+        } else {
+            printf("vazio");
+        }
+        printf("\n");
     }
-    printf("\n");
 }
 
-
 int verificarVitoria(Pilha *p1, Pilha *p2, Pilha *p3, Pilha *p4) {
-    Pilha *pilhas[4] = {p1, p2, p3, p4};
+    Pilha *pilhas[] = {p1, p2, p3, p4};
+
     for (int i = 0; i < 4; i++) {
-        if (pilhas[i]->topo == 3) {
-            int cor = pilhas[i]->discos[0].cor;
-            for (int j = 1; j < MAX_DISCOS; j++) {
-                if (pilhas[i]->discos[j].cor != cor) {
-                    return 0;
-                }
+        int cor = pilhas[i]->discos[0].cor;
+        int venceu = 1;
+        for (int j = 0; j <= pilhas[i]->topo; j++) {
+            if (pilhas[i]->discos[j].cor != cor) {
+                venceu = 0;
+                break;
             }
+        }
+        if (venceu && pilhas[i]->topo == MAX_DISCOS - 1) {
             return 1;
         }
     }
     return 0;
 }
 
-// Funçao principal
 int main() {
     Pilha p1, p2, p3, p4;
     PilhaUnit temp1, temp2;
+    int usoTemp1 = 0, usoTemp2 = 0;
 
     inicializarPilha(&p1);
     inicializarPilha(&p2);
@@ -175,21 +179,31 @@ int main() {
     inicializarPilhaUnit(&temp1);
     inicializarPilhaUnit(&temp2);
 
-    srand(time(NULL)); // Inicializa gerador de números aleatórios
+    srand(time(NULL)); // Inicializa a semente do gerador de números aleatórios
+
+    distribuirDiscos(&p1, &p2, &p3, &p4); // Distribui os discos nas pilhas
 
     int nivel;
     printf("Selecione o nivel do jogo (1: Facil, 2: Medio, 3: Dificil): ");
     scanf("%d", &nivel);
 
-    int usoTemp1 = 1, usoTemp2 = 1;
-    if (nivel == 2) {
-        usoTemp2 = 0;
-    } else if (nivel == 3) {
-        usoTemp1 = 0;
-        usoTemp2 = 0;
+    switch (nivel) {
+        case 1:
+            usoTemp1 = 1;
+            usoTemp2 = 1;
+            break;
+        case 2:
+            usoTemp1 = 1;
+            usoTemp2 = 0;
+            break;
+        case 3:
+            usoTemp1 = 0;
+            usoTemp2 = 0;
+            break;
+        default:
+            printf("Nivel invalido!\n");
+            return 1;
     }
-
-    distribuirDiscos(&p1, &p2, &p3, &p4); // Distribui os discos nas pilhas
 
     time_t inicio, fim;
     time(&inicio);
@@ -197,7 +211,12 @@ int main() {
     int movimento = 0;
     while (1) {
         printf("Jogo Atual:\n");
-        exibirJogo(&p1, &p2, &p3, &p4,usoTemp1 ? &temp1 : NULL, usoTemp2 ? &temp2 : NULL);
+        exibirJogo(&p1, &p2, &p3, &p4, &temp1, &temp2, usoTemp1, usoTemp2);
+
+        if (verificarVitoria(&p1, &p2, &p3, &p4)) {
+            printf("Parabéns, você venceu!\n");
+            break;
+        }
         
         printf("\nDigite seu movimento (1: PUSH pilha x e POP pilha y, 2: PUSH pilha x e POP para temporario, 3: PUSH do temporario e POP na pilha x, 0: Sair): ");
         scanf("%d", &movimento);
@@ -243,11 +262,7 @@ int main() {
                 case 3: origem = &p3; break;
                 case 4: origem = &p4; break;
             }
-            // switch (temp) {
-            //     case 1: temporario = &temp1; break;
-            //     case 2: temporario = &temp2; break;
-            // }
-             if (temp == 1 && usoTemp1) {
+            if (temp == 1 && usoTemp1) {
                 temporario = &temp1;
             } else if (temp == 2 && usoTemp2) {
                 temporario = &temp2;
@@ -260,36 +275,32 @@ int main() {
                 printf("Movimento invalido!\n");
             }
 
-        } else if (movimento == 3) {
-            int temp, x;
-            printf("Digite o temporario (1 ou 2) e a pilha de destino (x): ");
-            scanf("%d %d", &temp, &x);
+        } else if (movimento == 3 && usoTemp1) {
+            int x, temp;
+            printf("Digite a pilha de destino (x) e o temporario (1 ou 2): ");
+            scanf("%d %d", &x, &temp);
 
-            PilhaUnit *temporario = NULL;
             Pilha *destino = NULL;
-            // switch (temp) {
-            //     case 1: temporario = &temp1; break;
-            //     case 2: temporario = &temp2; break;
-            // }
+            PilhaUnit *temporario = NULL;
             switch (x) {
                 case 1: destino = &p1; break;
                 case 2: destino = &p2; break;
                 case 3: destino = &p3; break;
                 case 4: destino = &p4; break;
             }
-
             if (temp == 1 && usoTemp1) {
                 temporario = &temp1;
             } else if (temp == 2 && usoTemp2) {
                 temporario = &temp2;
             }
 
-            if (temporario && destino && pilhaUnitOcupada(temporario) && !pilhaCheia(destino)) {
+            if (destino && temporario && !pilhaCheia(destino) && pilhaUnitOcupada(temporario)) {
                 Disco disco = popUnit(temporario);
                 push(destino, disco);
             } else {
                 printf("Movimento invalido!\n");
             }
+
         } else {
             printf("Movimento invalido ou nao permitido para o nivel selecionado!\n");
         }
@@ -303,6 +314,6 @@ int main() {
     time(&fim);
     double tempo = difftime(fim, inicio);
     printf("Tempo de jogo: %.2f segundos\n", tempo);
-    
+
     return 0;
 }
