@@ -126,18 +126,27 @@ INSERT INTO Atendimento (fisioterapeuta_id, paciente_id, data_hora_fim, observac
 -- Resolução dos Exercicios:
 
 -- 1)
-CREATE OR REPLACE FUNCTION total_de_atendimentos() RETURNS INTEGER AS
-$$
-DECLARE
-    total INTEGER;
-BEGIN
-    SELECT COUNT(*) INTO total from atendimento;
+-- CREATE OR REPLACE FUNCTION total_de_atendimentos() RETURNS INTEGER AS
+-- $$
+-- DECLARE
+--     total INTEGER;
+-- BEGIN
+--     SELECT COUNT(*) INTO total from atendimento;
 
-RETURN total;
+-- RETURN total;
+-- END;
+-- $$ LANGUAGE "plpgsql";
+
+-- -- Chamada da Função;
+-- SELECT total_de_atendimentos();
+
+-- 2)
+CREATE OR REPLACE function AdicionaAtendimento(fisioterapeuta_id INTEGER, paciente_id INTEGER, data_hora_fim TIMESTAMP, observacao TEXT, nota INTEGER, valor_por_hora_fisioterapeuta MONEY) RETURNS void AS
+$$
+BEGIN
+    INSERT INTO Atendimento VALUES (fisioterapeuta_id, paciente_id, data_hora_fim, observacao, nota, valor_por_hora_fisioterapeuta);
 END;
 $$ LANGUAGE "plpgsql";
 
--- Chamada da Função;
-SELECT total_de_atendimentos();
-
+AdicionaAtendimento(8, 16, '2024-04-04 16:23:18', 'Reabilitacao movimento do joelho', 3, 285);
 
