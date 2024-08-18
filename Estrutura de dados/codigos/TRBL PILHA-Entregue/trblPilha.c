@@ -2,9 +2,10 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define MAX_DISCOS 4
-#define NUM_PINOS 4
 
+#define MAX_DISCOS 4
+
+//Structs
 typedef struct {
     int pino;
 } Disco;
@@ -19,6 +20,7 @@ typedef struct {
     int ocupado;
 } PilhaUnit;
 
+// Funções para manipular pilha
 void inicializarPilha(Pilha *p) {
     p->topo = -1;
 }
@@ -69,6 +71,7 @@ Disco popUnit(PilhaUnit *p) {
     return vazio;
 }
 
+// Função distribuir discos
 void distribuirDiscos(Pilha *p1, Pilha *p2, Pilha *p3, Pilha *p4) {
     Disco discos[12];
     int i;
@@ -88,11 +91,11 @@ void distribuirDiscos(Pilha *p1, Pilha *p2, Pilha *p3, Pilha *p4) {
 
     // Distribui os discos aleatoriamente nas pilhas
     for (i = 0; i < 12; i++) {
-        if (i < 4) {
+        if (i < 3) { //4
             push(p1, discos[i]);
-        } else if (i < 8) {
+        } else if (i < 6) { //8
             push(p2, discos[i]);
-        } else if (i < 10) {
+        } else if (i < 9) { //10
             push(p3, discos[i]);
         } else {
             push(p4, discos[i]);
@@ -100,6 +103,7 @@ void distribuirDiscos(Pilha *p1, Pilha *p2, Pilha *p3, Pilha *p4) {
     }
 }
 
+// Exibindo o Estado do Jogo
 void exibirJogo(Pilha *p1, Pilha *p2, Pilha *p3, Pilha *p4, PilhaUnit *temp1, PilhaUnit *temp2, int usoTemp1, int usoTemp2) {
     int i;
 
@@ -148,6 +152,7 @@ void exibirJogo(Pilha *p1, Pilha *p2, Pilha *p3, Pilha *p4, PilhaUnit *temp1, Pi
     }
 }
 
+// Função verificar vitoria
 int verificarVitoria(Pilha *p1, Pilha *p2, Pilha *p3, Pilha *p4) {
     Pilha *pilhas[] = {p1, p2, p3, p4};
 
@@ -179,7 +184,7 @@ int main() {
     inicializarPilhaUnit(&temp1);
     inicializarPilhaUnit(&temp2);
 
-    srand(time(NULL)); // Inicializa a semente do gerador de números aleatórios
+    srand(time(NULL)); // Inicializa o gerador de números aleatórios
 
     distribuirDiscos(&p1, &p2, &p3, &p4); // Distribui os discos nas pilhas
 
@@ -214,7 +219,7 @@ int main() {
         exibirJogo(&p1, &p2, &p3, &p4, &temp1, &temp2, usoTemp1, usoTemp2);
 
         if (verificarVitoria(&p1, &p2, &p3, &p4)) {
-            printf("Parabéns, você venceu!\n");
+            printf("Parabens, você venceu!\n");           
             break;
         }
         

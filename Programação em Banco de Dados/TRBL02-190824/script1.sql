@@ -58,7 +58,8 @@ CREATE DATABASE faxina;
 CREATE TABLE diarista (
     id SERIAL PRIMARY KEY,
     cpf CHARACTER(11) UNIQUE NOT NULL,
-    nome CHARACTER VARYING(100) NOT NULL
+    nome CHARACTER VARYING(100) NOT NULL,
+    -- ativo BOOLEAN DEFAULT TRUE
 );
 
 -- Responsável
@@ -94,7 +95,7 @@ CREATE TABLE preco_faxina (
 -- Faxina
 CREATE TABLE faxina (
     id SERIAL PRIMARY KEY,
-    diarista_id INTEGER REFERENCES diarista(id),
+    diarista_id INTEGER REFERENCES diarista(id) ON DELETE CASCADE,
     residencia_id INTEGER REFERENCES residencia(id),
     data_faxina DATE NOT NULL,
     realizada BOOLEAN NOT NULL DEFAULT FALSE,
@@ -109,15 +110,14 @@ CREATE TABLE faxina (
 -- Inserts para a tabela diarista
 INSERT INTO diarista (cpf, nome) VALUES
 ('12345678901', 'Maria Silva'),
-('23456789012', 'João Santos'),
+('23456789012', 'Joana Santos'),
 ('34567890123', 'Ana Oliveira'),
-('45678901234', 'Carlos Ferreira'),
+('45678901234', 'Caroline Ferreira'),
 ('56789012345', 'Juliana Costa'),
-('67890123456', 'Pedro Almeida'),
+('67890123456', 'Paula Almeida'),
 ('78901234567', 'Fernanda Lima'),
-('89012345678', 'Ricardo Souza'),
 ('90123456789', 'Camila Rodrigues'),
-('01234567890', 'Marcelo Pereira');
+('01234567890', 'Marcela Pereira');
 
 -- Inserts para a tabela responsavel
 INSERT INTO responsavel (cpf, nome) VALUES
