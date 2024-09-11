@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade nº 2</title>
+</head>
+<body>
+    <form action="processarATV2.php" method="post" id="formATV2">
+        <label for="numero1">Primeiro número:</label>
+        <input type="number" id="numero1" name="numero1" required><br>
+
+        <label for="numero2">Segundo número:</label>
+        <input type="number" id="numero2" name="numero2" required><br>
+
+        <label for="respostaSoma">Qual é o valor da Soma:</label>
+        <input type="number" id="respostaSoma" name="respostaSoma" required><br>
+
+        <label for="respostaSubtracao">Qual é o valor da Subtração:</label>
+        <input type="number" id="respostaSubtracao" name="respostaSubtracao" required><br>
+
+        <label for="respostaMultiplicacao">Qual é o valor da Multiplicação:</label>
+        <input type="number" id="respostaMultiplicacao" name="respostaMultiplicacao" required><br>
+
+        <label for="respostaDivisao">Qual é o valor da Divisão:</label>
+        <input type="number" id="respostaDivisao" name="respostaDivisao" required><br>
+
+        <button type="submit" value="Verificar Respostas">Verificar Respostas</button>
+        <button type="button" id="limparCampos">Limpar</button>
+    </form>
+
+    <script>
+        //Limpar os campus de input do formulário.
+        document.getElementById('limparCampos').addEventListener('click', function() {
+            document.getElementById('formATV2').reset();           
+        });
+        </script>           
+</body>
+</html>
