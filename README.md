@@ -43,6 +43,34 @@ ___
 ![SQL](/assets/icons8-sql-100.png)
 ![PostegreSQL](/assets/icons8-postgreesql-100.png)
 
+### Desenvolvimento de Aplicativos WebII
+- **Professor**: Me. Vinicíus Fritzen Machado
+- **Descrição**: Esta disciplina apresenta os padrões arquiteturais e desenvolve aplicações usando frameworks para a organização e desenvolvimento de aplicativos web.
+  
+#### TECNOLOGIAS USADAS: 
+![JS](/assets/icons8-js-100.png)
+![NodeJS](/assets/icons8-nodejs-windows-10/icons8-nodejs-100.png)
+![Express](/assets/icons8-expresso-js-windows-11-color/icons8-expresso-js-100.png)
+
+### Princípios e Padrões de Arquitetura
+- **Professor**: Me. Marcio Josue Ramos Torres
+- **Descrição**: A disciplina tem por objetivo  projetar e implementar sistemas considerando os princípios e padrões de arquitetura.
+  
+#### TECNOLOGIAS USADAS: 
+![Java](/assets/icons8-logo-java-coffee-cup-windows-11-color/icons8-logo-java-coffee-cup-100.png)
+![NodeJS](/assets/icons8-logotipo-da-primavera-color/icons8-logotipo-da-primavera-100.png)
+<!-- ![Express](/assets) -->
+
+<!-- ### Qualidade de Software
+- **Professor**: Me. Narúci dos Santos Bastos
+- **Descrição**: Esta disciplina aplica os princípios da qualidade no processo de desenvolvimento de software.
+.
+  
+#### TECNOLOGIAS USADAS: 
+![JS](/assets/icons8-js-100.png)
+![NodeJS](/assets/icons8-nodejs-windows-10/icons8-nodejs-100.png)
+![Express](/assets/icons8-expresso-js-windows-11-color/icons8-expresso-js-100.png) -->
+
   
 ## Contato
 Para mais informações, sinta-se à vontade para entrar em contato.
